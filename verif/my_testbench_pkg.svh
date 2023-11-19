@@ -4,13 +4,19 @@ package my_testbench_pkg;
   // The UVM sequence, transaction item, and driver are in these files:
   `include "my_sequence.svh"
   `include "my_driver.svh"
+  `include "my_monitor.svh"
+  `include "my_scoreboard.svh"
+ 
   
   // The agent contains sequencer, driver, and monitor (not included)
   class my_agent extends uvm_agent;
     `uvm_component_utils(my_agent)
     
     my_driver driver;
+    my_monitor monitor;
+    my_scoreboard scoreboard;
     uvm_sequencer#(my_transaction) sequencer;
+
     
     function new(string name, uvm_component parent);
       super.new(name, parent);
@@ -18,13 +24,15 @@ package my_testbench_pkg;
     
     function void build_phase(uvm_phase phase);
       driver = my_driver ::type_id::create("driver", this);
-      sequencer =
-        uvm_sequencer#(my_transaction)::type_id::create("sequencer", this);
+      monitor = my_monitor::type_id::create("monitor", this);
+      scoreboard = my_scoreboard::type_id::create("scoreboard", this);      
+      sequencer = uvm_sequencer#(my_transaction)::type_id::create("sequencer", this);
     endfunction    
     
     // In UVM connect phase, we connect the sequencer to the driver.
     function void connect_phase(uvm_phase phase);
       driver.seq_item_port.connect(sequencer.seq_item_export);
+      monitor.anls_port.connect(scoreboard.m_analysis_imp);      
     endfunction
     
     task run_phase(uvm_phase phase);

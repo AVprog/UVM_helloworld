@@ -4,7 +4,7 @@ class my_driver extends uvm_driver #(my_transaction);
 
   virtual dut_if dut_vif;
 
-  function new(string name, uvm_component parent);
+  function new(string name="my_driver", uvm_component parent);
     super.new(name, parent);
   endfunction
 

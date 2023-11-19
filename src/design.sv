@@ -5,6 +5,7 @@ interface dut_if;
   logic cmd;
   logic [7:0] addr;
   logic [7:0] data;
+  logic result;
 endinterface
 
 `include "uvm_macros.svh"
@@ -21,4 +22,12 @@ module dut(dut_if dif);
                 $sformatf("Received cmd=%b, addr=0x%2h, data=0x%2h",
                           dif.cmd, dif.addr, dif.data), UVM_MEDIUM)
     end
+
+  always @(posedge dif.clock)
+  if( dif.data == 3)  begin
+      dif.result <= 1;
+  end       
+  else begin
+      dif.result <= 0;
+  end
 endmodule

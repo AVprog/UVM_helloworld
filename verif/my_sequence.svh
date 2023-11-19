@@ -5,6 +5,7 @@ class my_transaction extends uvm_sequence_item;
   rand bit cmd;
   rand int addr;
   rand int data;
+  int result;
 
   constraint c_addr { addr >= 0; addr < 256; }
   constraint c_data { data >= 0; data < 2; }
