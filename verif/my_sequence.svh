@@ -24,6 +24,7 @@ class my_sequence extends uvm_sequence#(my_transaction);
   endfunction
 
   task body;
+    int k=0;
     repeat(8) begin
       req = my_transaction::type_id::create("req");
       start_item(req);
@@ -31,6 +32,9 @@ class my_sequence extends uvm_sequence#(my_transaction);
       if (!req.randomize()) begin
         `uvm_error("MY_SEQUENCE", "Randomize failed.");
       end
+
+      req.data = k;
+      k++;
 
       // If using ModelSim, which does not support randomize(),
       // we must randomize item using traditional methods, like
